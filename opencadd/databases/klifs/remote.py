@@ -290,6 +290,296 @@ class Structures(RemoteInitializer, StructuresProvider):
     opencadd.databases.klifs.core.StructuresProvider
     """
 
+    @staticmethod
+    def _correct_errors(structures):
+        """Correct errors present in the KLIFS database concerning structures."""
+        pdb_ids = structures["structure.pdb_id"].unique()
+        if "3cs9" in pdb_ids:
+            # remove entries with chain A, C and D, and alternate location B
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "3cs9")
+                    & (structures["structure.chain"].isin(["A", "C", "D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            # set alternate model to "-" for chains A, C and D
+            structures.loc[
+                (structures["structure.pdb_id"] == "3cs9")
+                & (structures["structure.chain"].isin(["A", "C", "D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "5cnn" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "5cnn")
+                    & (structures["structure.chain"].isin(["B"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "5cnn")
+                & (structures["structure.chain"].isin(["B"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "3ika" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "3ika")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "3ika")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "2hz0" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "2hz0")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "2hz0")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "5x2c" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "5x2c")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "C")
+                ].index
+            )
+        if "6p1d" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6p1d")
+                    & (structures["structure.chain"].isin(["D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6p1d")
+                & (structures["structure.chain"].isin(["D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6v5p" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6v5p")
+                    & (structures["structure.chain"].isin(["B", "C", "D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6v5p")
+                & (structures["structure.chain"].isin(["B", "C", "D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6v66" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6v66")
+                    & (structures["structure.chain"].isin(["A", "C"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6v66")
+                & (structures["structure.chain"].isin(["A", "C"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "5gty" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "5gty")
+                    & (structures["structure.chain"].isin(["B", "C", "D", "E", "F", "H"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "5gty")
+                & (structures["structure.chain"].isin(["B", "C", "D", "E", "F", "H"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6v5n" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6v5n")
+                    & (structures["structure.chain"].isin(["A", "B", "D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6v5n")
+                & (structures["structure.chain"].isin(["A", "B", "D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "4zjv" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "4zjv")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "4zjv")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6npv" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6npv")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6npv")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "4zse" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "4zse")
+                    & (structures["structure.chain"].isin(["D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "4zse")
+                & (structures["structure.chain"].isin(["D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6v6k" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6v6k")
+                    & (structures["structure.chain"].isin(["B", "D", "F"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6v6k")
+                & (structures["structure.chain"].isin(["B", "D", "F"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6z4b" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6z4b")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6z4b")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "2jiv" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "2jiv")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "2jiv")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6v6o" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6v6o")
+                    & (structures["structure.chain"].isin(["A", "B", "C"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6v6o")
+                & (structures["structure.chain"].isin(["A", "B", "C"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "5x2a" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "5x2a")
+                    & (structures["structure.chain"].isin(["B", "C"]))
+                    & (structures["structure.alternate_model"] == "C")
+                ].index
+            )
+        if "5x2f" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "5x2f")
+                    & (structures["structure.chain"].isin(["B", "C", "D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "5x2f")
+                & (structures["structure.chain"].isin(["B", "C", "D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6bl8" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6bl8")
+                    & (structures["structure.chain"].isin(["A"]))
+                    & (structures["structure.alternate_model"] == "B")
+                    ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6bl8")
+                & (structures["structure.chain"].isin(["A"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        if "6duk" in pdb_ids:
+            structures = structures.drop(
+                structures[
+                    (structures["structure.pdb_id"] == "6duk")
+                    & (structures["structure.chain"].isin(["C", "D"]))
+                    & (structures["structure.alternate_model"] == "B")
+                    ].index
+            )
+            structures.loc[
+                (structures["structure.pdb_id"] == "6duk")
+                & (structures["structure.chain"].isin(["C", "D"]))
+                & (structures["structure.alternate_model"] == "A"),
+                "structure.alternate_model",
+            ] = "-"
+        return structures
+
     def all_structures(self):
 
         # Use KLIFS API: Get all kinase KLIFS IDs
@@ -302,6 +592,7 @@ class Structures(RemoteInitializer, StructuresProvider):
         structures = self._standardize_dataframe(
             structures, DATAFRAME_COLUMNS["structures"], REMOTE_COLUMNS_MAPPING["structures"]
         )
+        structures = self._correct_errors(structures)
         return structures
 
     def by_structure_klifs_id(self, structure_klifs_ids):
@@ -319,6 +610,7 @@ class Structures(RemoteInitializer, StructuresProvider):
         structures = self._standardize_dataframe(
             structures, DATAFRAME_COLUMNS["structures"], REMOTE_COLUMNS_MAPPING["structures"]
         )
+        structures = self._correct_errors(structures)
         return structures
 
     def by_ligand_klifs_id(self, ligand_klifs_ids):
@@ -344,6 +636,7 @@ class Structures(RemoteInitializer, StructuresProvider):
         structures = self._standardize_dataframe(
             structures, DATAFRAME_COLUMNS["structures"], REMOTE_COLUMNS_MAPPING["structures"]
         )
+        structures = self._correct_errors(structures)
         return structures
 
     def by_kinase_klifs_id(self, kinase_klifs_ids):
@@ -361,6 +654,7 @@ class Structures(RemoteInitializer, StructuresProvider):
         structures = self._standardize_dataframe(
             structures, DATAFRAME_COLUMNS["structures"], REMOTE_COLUMNS_MAPPING["structures"]
         )
+        structures = self._correct_errors(structures)
         return structures
 
     def by_structure_pdb_id(
@@ -385,6 +679,7 @@ class Structures(RemoteInitializer, StructuresProvider):
             structures = self._filter_pdb_by_alt_chain(
                 structures, structure_alternate_model, structure_chain
             ).reset_index(drop=True)
+        structures = self._correct_errors(structures)
         return structures
 
     def by_ligand_expo_id(self, ligand_expo_ids):
@@ -398,6 +693,7 @@ class Structures(RemoteInitializer, StructuresProvider):
         structures = self._standardize_dataframe(
             structures, DATAFRAME_COLUMNS["structures"], REMOTE_COLUMNS_MAPPING["structures"]
         )
+        structures = self._correct_errors(structures)
         return structures
 
     def by_kinase_name(self, kinase_names):
@@ -411,6 +707,7 @@ class Structures(RemoteInitializer, StructuresProvider):
         structures = self._standardize_dataframe(
             structures, DATAFRAME_COLUMNS["structures"], REMOTE_COLUMNS_MAPPING["structures"]
         )
+        structures = self._correct_errors(structures)
         return structures
 
 
